@@ -1,22 +1,30 @@
-{
-  "pacientes": [
-    {
-      "id": 1,
-      "nombre": "Ana García",
-      "email": "ana@mail.com",
-      "telefono": "555-0001"
-    },
-    {
-      "id": 2,
-      "nombre": "Luis Martínez",
-      "email": "luis@mail.com",
-      "telefono": "555-0002"
-    },
-    {
-      "id": 3,
-      "nombre": "María López",
-      "email": "maria@mail.com",
-      "telefono": "555-0003"
-    }
-  ]
-}
+[
+  {
+    "Id": 1,
+    "Nombre": "Ana",
+    "Apellido": "García",
+    "Email": "ana@mail.com",
+    "Telefono": "555-0001"
+  },
+  {
+    "Id": 2,
+    "Nombre": "Luis",
+    "Apellido": "Martínez",
+    "Email": "luis@mail.com",
+    "Telefono": "555-0002"
+  },
+  {
+    "Id": 3,
+    "Nombre": "María",
+    "Apellido": "López",
+    "Email": "maria@mail.com",
+    "Telefono": "555-0003"
+  },
+  {
+    "Id": 4,
+    "Nombre": "Edith",
+    "Apellido": "Romero",
+    "Email": "edith@gmail.com",
+    "Telefono": "555-0004"
+  }
+]
