@@ -1,0 +1,22 @@
+{
+  "pacientes": [
+    {
+      "id": 1,
+      "nombre": "Ana García",
+      "email": "ana@mail.com",
+      "telefono": "555-0001"
+    },
+    {
+      "id": 2,
+      "nombre": "Luis Martínez",
+      "email": "luis@mail.com",
+      "telefono": "555-0002"
+    },
+    {
+      "id": 3,
+      "nombre": "María López",
+      "email": "maria@mail.com",
+      "telefono": "555-0003"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "medicos": [
+    {
+      "id": 1,
+      "nombre": "Dr. Carlos Reyes",
+      "especialidad": "Medicina General",
+      "numeroLicencia": "MG-10421"
+    },
+    {
+      "id": 2,
+      "nombre": "Dra. Patricia Vega",
+      "especialidad": "Pediatría",
+      "numeroLicencia": "PD-20835"
+    },
+    {
+      "id": 3,
+      "nombre": "Dr. Roberto Sánchez",
+      "especialidad": "Cardiología",
+      "numeroLicencia": "CA-30117"
+    }
+  ]
+}
