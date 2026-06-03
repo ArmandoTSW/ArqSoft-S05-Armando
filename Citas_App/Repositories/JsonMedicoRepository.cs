@@ -1,9 +1,9 @@
-﻿using Citas_App.Models;
-using CitasApp.Interfaces;
-using CitasApp.Models;
+﻿using Citas_App.Interfaces;
+using Citas_App.Models;
+using Citas_App.Interfaces;
 using System.Text.Json;
 
-namespace CitasApp.Repositories
+namespace Citas_App.Repositories
 {
     public class JsonMedicoRepository : IMedicoRepository
     {

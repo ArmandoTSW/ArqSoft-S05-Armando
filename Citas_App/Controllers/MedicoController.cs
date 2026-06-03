@@ -1,26 +1,19 @@
-﻿using Citas_App.Models;
-using CitasApp.Models;
+﻿using Citas_App.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace CitasApp.Controllers
 {
-    public class HomeController : Controller
+    public class MedicoController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        private readonly IMedicoRepository _repo;
+        public MedicoController(IMedicoRepository repo) { _repo = repo; }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        public IActionResult Index() => View(_repo.ObtenerTodos());
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Detalle(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var medico = _repo.ObtenerPorId(id);
+            return medico == null ? NotFound() : View(medico);
         }
     }
 }

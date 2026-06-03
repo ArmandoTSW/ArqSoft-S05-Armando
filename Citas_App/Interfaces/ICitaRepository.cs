@@ -1,11 +1,10 @@
 ﻿using Citas_App.Models;
 
-
-namespace CitasApp.Interfaces
+namespace Citas_App.Interfaces
 {
-    public interface IMedicoRepository
+    public interface ICitaRepository
     {
-        List<Medico> ObtenerTodos();
-        Medico? ObtenerPorId(int id);
+        List<Cita> ObtenerTodos();
+        List<Cita> ObtenerPorPaciente(int pacienteId);
     }
 }

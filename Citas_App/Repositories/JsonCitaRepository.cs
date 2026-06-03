@@ -1,9 +1,8 @@
-﻿using Citas_App.Models;
-using CitasApp.Interfaces;
-using CitasApp.Models;
+﻿using Citas_App.Interfaces;
+using Citas_App.Models;
 using System.Text.Json;
 
-namespace CitasApp.Repositories
+namespace Citas_App.Repositories
 {
     public class JsonCitaRepository : ICitaRepository
     {
@@ -19,17 +18,9 @@ namespace CitasApp.Repositories
         {
             if (!File.Exists(_path)) return new();
             var json = File.ReadAllText(_path);
-            var citasJson = JsonSerializer.Deserialize<List<CitaJson>>(json, _options) ?? new();
-            return citasJson.Select(c => new Cita
-            {
-                Id = c.Id,
-                PacienteId = c.PacienteId,
-                MedicoId = c.MedicoId,
-                Fecha = DateOnly.Parse(c.Fecha),
-                Hora = TimeOnly.Parse(c.Hora),
-                Motivo = c.Motivo,
-                Estado = c.Estado
-            }).ToList();
+
+            // Si el JSON se mapea directo a Cita como en Medicos y Pacientes:
+            return JsonSerializer.Deserialize<List<Cita>>(json, _options) ?? new();
         }
 
         public List<Cita> ObtenerPorPaciente(int pacienteId) =>

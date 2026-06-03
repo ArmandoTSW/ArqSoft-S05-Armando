@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Cita>
+﻿@using Citas_App.Models
+@model IEnumerable<Cita>
 
 @{
     ViewData["Title"] = "Agenda de Citas";
@@ -30,6 +31,7 @@
                     <td>Paciente #@cita.PacienteId</td>
                     <td>Médico #@cita.MedicoId</td>
                     <td>@cita.Fecha</td>
+                    <td>@cita.Hora</td>
                     <td>@cita.Motivo</td>
                     <td>
                         @if (cita.Estado == "Confirmada")
