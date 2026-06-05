@@ -1,6 +1,5 @@
 ﻿using Citas_App.Interfaces;
 using Citas_App.Models;
-using Citas_App.Interfaces;
 using System.Text.Json;
 
 namespace Citas_App.Repositories
