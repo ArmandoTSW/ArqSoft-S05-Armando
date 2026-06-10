@@ -9,9 +9,9 @@ namespace CitasApp.Infrastructure.Repositories
         private readonly string _path;
         private readonly JsonSerializerOptions _options = new() { WriteIndented = true };
 
-        public JsonPacienteRepository(IWebHostEnvironment env)
+        public JsonPacienteRepository(string dataPath)
         {
-            _path = Path.Combine(env.ContentRootPath, "data", "pacientes.json");
+            _path = Path.Combine(dataPath, "pacientes.json");
         }
 
         public List<Paciente> ObtenerTodos()
