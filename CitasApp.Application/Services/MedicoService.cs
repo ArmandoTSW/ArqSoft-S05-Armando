@@ -9,7 +9,7 @@ namespace CitasApp.Application.Services
 
         public MedicoService(IMedicoRepository repository)
         {
-            _repository = repository;
+            _repository = repository;   
         }
 
         public List<Medico> ObtenerTodosMedicos() => _repository.ObtenerTodos();

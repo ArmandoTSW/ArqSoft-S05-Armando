@@ -23,5 +23,5 @@ namespace CitasApp.Api.Controllers
             var paciente = _service.ObtenerPacientePorId(id);
             return paciente == null ? NotFound() : Ok(paciente);
         }
-    }
+    }   
 }
