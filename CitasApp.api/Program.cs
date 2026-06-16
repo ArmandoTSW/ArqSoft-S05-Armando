@@ -29,6 +29,7 @@ builder.Services.AddScoped<IPacienteRepository>(provider =>
 builder.Services.AddScoped<MedicoService>();
 builder.Services.AddScoped<CitaService>();
 builder.Services.AddScoped<PacienteService>();
+builder.Services.AddScoped<ICalculadoraService, CalculadoraService>();
 
 // --------------------------------------------------------
 
