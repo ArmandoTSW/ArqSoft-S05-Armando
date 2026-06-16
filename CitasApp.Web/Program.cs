@@ -1,6 +1,7 @@
 using CitasApp.Domain.Interfaces;
 using CitasApp.Infrastructure.Repositories;
 using CitasApp.Application.Services;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
