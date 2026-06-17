@@ -2,6 +2,7 @@ using CitasApp.Application.Services; // Asegúrate de tener este using
 using CitasApp.Domain.Interfaces;
 using CitasApp.Infrastructure.Repositories;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // 1. Agregar los servicios al contenedor
@@ -33,7 +34,19 @@ builder.Services.AddScoped<ICalculadoraService, CalculadoraService>();
 
 // --------------------------------------------------------
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReact", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
+              .AllowAnyMethod()
+              .AllowAnyHeader()
+              .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
+
 
 // Configuración del pipeline de HTTP
 if (app.Environment.IsDevelopment())
@@ -43,6 +56,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowReact");
 app.UseAuthorization();
 app.MapControllers();
 
