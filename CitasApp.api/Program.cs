@@ -32,6 +32,13 @@ builder.Services.AddScoped<PacienteService>();
 
 // --------------------------------------------------------
 
+builder.Services.AddScoped<IPacienteRepository>(sp =>
+{
+    var env = sp.GetRequiredService<IWebHostEnvironment>();
+    var repo = RepositoryFactory.CrearPacienteRepository(builder.Environment.EnvironmentName, env);
+    return new LoggingPacienteRepository(repo);
+});
+
 var app = builder.Build();
 
 // Configuración del pipeline de HTTP
