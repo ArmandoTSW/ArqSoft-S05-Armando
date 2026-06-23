@@ -1,66 +1,37 @@
 ﻿using CitasApp.Domain.Interfaces;
-using Microsoft.AspNetCore.Hosting;
 
 namespace CitasApp.Infrastructure.Repositories
-
 {
-
     public static class RepositoryFactory
     {
-
-        public static IPacienteRepository CrearPacienteRepository(
-
-            string entorno, IWebHostEnvironment env)
-
+        public static IPacienteRepository CrearPacienteRepository(string environmentName, object env)
         {
+            var dataPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "data"
+            );
 
-            return entorno switch
-            {
-
-                "Production" => new MemoriaPacienteRepository(),
-
-                _ => new JsonPacienteRepository(env)
-
-            };
-
+            return new JsonPacienteRepository(dataPath);
         }
 
-
-        public static IMedicoRepository CrearMedicoRepository(
-
-            string entorno, IWebHostEnvironment env)
-
+        public static IMedicoRepository CrearMedicoRepository(object env)
         {
+            var dataPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "data"
+            );
 
-            return entorno switch
-            {
-
-                "Production" => new JsonMedicoRepository(env),
-
-                _ => new JsonMedicoRepository(env)
-
-            };
-
+            return new JsonMedicoRepository(dataPath);
         }
 
-
-        public static ICitaRepository CrearCitaRepository(
-
-            string entorno, IWebHostEnvironment env)
-
+        public static ICitaRepository CrearCitaRepository(object env)
         {
+            var dataPath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "data"
+            );
 
-            return entorno switch
-            {
-
-                "Production" => new JsonCitaRepository(env),
-
-                _ => new JsonCitaRepository(env)
-
-            };
-
+            return new JsonCitaRepository(dataPath);
         }
-
     }
-
 }
