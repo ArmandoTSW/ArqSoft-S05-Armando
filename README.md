@@ -14,6 +14,7 @@
 ## 📋 Tabla de Contenidos
 
 - [¿Qué es?](#qué-es)
+- [Diagrama de Clases](#-diagrama-de-clases)
 - [De MVC a Arquitectura Hexagonal](#de-mvc-a-arquitectura-hexagonal)
 - [Las 4 Capas Explicadas](#las-4-capas-explicadas)
 - [APIs REST Implementadas](#apis-rest-implementadas)
@@ -34,6 +35,15 @@ Además, se implementaron **2 capas de API REST**:
 
 1. **API REST para Citas** - Gestión de citas médicas mediante HTTP
 2. **API REST para Calculadora** - Operaciones matemáticas básicas vía HTTP
+
+---
+
+## 📊 Diagrama de Clases
+
+Diagrama de clases (Mermaid) con el estado real del proyecto: capas Domain/Application/
+Infrastructure/Web, patrón Observer y APIs REST.
+
+👉 [docs/diagrama-clases.md](docs/diagrama-clases.md)
 
 ---
 
