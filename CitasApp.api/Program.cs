@@ -1,63 +1,82 @@
-using CitasApp.Application.Services; // Asegúrate de tener este using
+using CitasApp.Application.Services;
 using CitasApp.Domain.Interfaces;
 using CitasApp.Infrastructure.Repositories;
+using System;
+using Microsoft.AspNetCore.Builder;
+using System.IO;
 
-
-var builder = WebApplication.CreateBuilder(args);
-
-// 1. Agregar los servicios al contenedor
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// --- REGISTRO DE REPOSITORIOS (Acceso directo a datos) ---
-// Definimos la ruta base de la carpeta donde están tus JSON
-string dataDirectory = Path.Combine(builder.Environment.ContentRootPath, "data");
-
-// Registro de repositorios con la ruta a los JSON
-builder.Services.AddScoped<IMedicoRepository>(provider =>
-    new JsonMedicoRepository(dataDirectory)
-);
-builder.Services.AddScoped<ICitaRepository>(provider =>
-    new JsonCitaRepository(dataDirectory)
-);
-builder.Services.AddScoped<IPacienteRepository>(provider =>
-    new JsonPacienteRepository(dataDirectory)
-);
-
-// --- REGISTRO DE SERVICIOS (AGREGADO PARA SOLUCIONAR EL ERROR 500) ---
-// Registramos los servicios para que el contenedor pueda inyectarlos en los controladores
-builder.Services.AddScoped<MedicoService>();
-builder.Services.AddScoped<CitaService>();
-builder.Services.AddScoped<PacienteService>();
-builder.Services.AddScoped<ICalculadoraService, CalculadoraService>();
-
-// --------------------------------------------------------
-
-builder.Services.AddCors(options =>
+try
 {
-    options.AddPolicy("AllowReact", policy =>
+    var builder = WebApplication.CreateBuilder(args);
+
+    // 1. Agregar los servicios al contenedor
+    builder.Services.AddControllers();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
+
+    // --- REGISTRO DE REPOSITORIOS ---
+    string dataDirectory = Path.Combine(builder.Environment.ContentRootPath, "data");
+
+    // SOLUCIÓN AL SOSPECHOSO 1:
+    if (!Directory.Exists(dataDirectory))
     {
-        policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
+        Directory.CreateDirectory(dataDirectory);
+    }
+
+    builder.Services.AddScoped<IMedicoRepository>(provider => new JsonMedicoRepository(dataDirectory));
+    builder.Services.AddScoped<ICitaRepository>(provider => new JsonCitaRepository(dataDirectory));
+    builder.Services.AddScoped<IPacienteRepository>(provider => new JsonPacienteRepository(dataDirectory));
+
+    // --- REGISTRO DE SERVICIOS ---
+    builder.Services.AddScoped<MedicoService>();
+    builder.Services.AddScoped<CitaService>();
+    builder.Services.AddScoped<PacienteService>();
+    builder.Services.AddScoped<ICalculadoraService, CalculadoraService>();
+
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowReact", policy =>
+        {
+            policy.WithOrigins("http://localhost:3000", "https://localhost:3000")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        });
     });
-});
 
-var app = builder.Build();
+    var app = builder.Build();
 
+    // Configuración del pipeline de HTTP
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-// Configuración del pipeline de HTTP
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseHttpsRedirection();
+    app.UseCors("AllowReact");
+    app.UseAuthorization();
+    app.MapControllers();
+
+    app.Run();
 }
+catch (Exception ex)
+{
+    // Esto mantendrá la consola abierta y te dirá la verdad del error
+    Console.BackgroundColor = ConsoleColor.DarkRed;
+    Console.ForegroundColor = ConsoleColor.White;
+    Console.WriteLine("\n=======================================================");
+    Console.WriteLine(" 🔥 ¡LA API SE HA CAÍDO AL INICIAR! 🔥 ");
+    Console.WriteLine("=======================================================\n");
+    Console.ResetColor();
 
-app.UseHttpsRedirection();
-app.UseCors("AllowReact");
-app.UseAuthorization();
-app.MapControllers();
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine($"EXCEPCIÓN: {ex.GetType().Name}");
+    Console.WriteLine($"MENSAJE: {ex.Message}\n");
+    Console.ForegroundColor = ConsoleColor.Yellow;
+    Console.WriteLine($"DETALLES:\n{ex.StackTrace}");
+    Console.ResetColor();
 
-app.Run();
+    Console.WriteLine("\nPresiona cualquier tecla para cerrar...");
+    Console.ReadKey();
+}
