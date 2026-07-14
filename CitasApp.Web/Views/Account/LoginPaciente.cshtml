@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Login Paciente";
+}
+<h2>Iniciar sesión (Paciente)</h2>
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <label>Email</label>
+        <input type="email" name="email" required />
+    </div>
+    <div>
+        <label>Contraseña</label>
+        <input type="password" name="password" required />
+    </div>
+    <button type="submit">Entrar</button>
+</form>
+<a asp-action="RegistroPaciente">Crear cuenta</a>

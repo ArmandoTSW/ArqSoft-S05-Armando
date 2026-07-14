@@ -23,5 +23,16 @@ namespace CitasApp.Infrastructure.Repositories
 
         public Paciente? ObtenerPorId(int id) =>
             ObtenerTodos().FirstOrDefault(p => p.Id == id);
-    }
+
+        public Paciente agregar(Paciente paciente)
+        {
+            var pacientes = ObtenerTodos();
+            paciente.Id = pacientes.Count == 0 ? 1 : pacientes.Max(p => p.Id) + 1;
+            pacientes.Add(paciente);
+            File.WriteAllText(_path, JsonSerializer.Serialize(pacientes, _options));
+            return paciente;
+        }
+    } 
+
 }
+    

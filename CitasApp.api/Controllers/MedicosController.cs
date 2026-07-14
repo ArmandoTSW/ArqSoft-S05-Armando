@@ -23,5 +23,6 @@ namespace CitasApp.Api.Controllers
             var medico = _service.ObtenerMedicoPorId(id);
             return medico == null ? NotFound() : Ok(medico);
         }
+
     }
 }

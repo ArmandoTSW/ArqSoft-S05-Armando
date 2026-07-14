@@ -6,5 +6,6 @@ namespace CitasApp.Domain.Interfaces
     {
         List<Paciente> ObtenerTodos();
         Paciente? ObtenerPorId(int id);
+        Paciente agregar(Paciente paciente);
     }
 }
