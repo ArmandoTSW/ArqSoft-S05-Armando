@@ -6,18 +6,32 @@ namespace CitasApp.Web.Controllers
     public class PacienteController : Controller
     {
         private readonly PacienteService _service;
+        private readonly ILogger<PacienteController> _logger;
 
-        public PacienteController(PacienteService service)
+        public PacienteController(PacienteService service, ILogger<PacienteController> logger)
         {
             _service = service;
+            _logger = logger;
         }
 
-        public IActionResult Index() => View(_service.ObtenerTodosPacientes());
+        public IActionResult Index()
+        {
+            _logger.LogInformation("Listando todos los pacientes");
+            return View(_service.ObtenerTodosPacientes());
+        }
 
         public IActionResult Detalle(int id)
         {
+            _logger.LogInformation("Buscando detalle del paciente {PacienteId}", id);
             var paciente = _service.ObtenerPacientePorId(id);
-            return paciente == null ? NotFound() : View(paciente);
+
+            if (paciente == null)
+            {
+                _logger.LogWarning("Paciente {PacienteId} no encontrado", id);
+                return NotFound();
+            }
+
+            return View(paciente);
         }
     }
 }
