@@ -4,6 +4,7 @@ using CitasApp.Infrastructure.Data;
 
 namespace CitasApp.Infrastructure.Repositories
 {
+    /// <summary>Guarda y consulta pacientes usando Entity Framework / Postgres.</summary>
     public class EfPacienteRepository : IPacienteRepository
     {
         private readonly CitasAppDbContext _context;
@@ -23,7 +24,7 @@ namespace CitasApp.Infrastructure.Repositories
             return _context.Pacientes.FirstOrDefault(p => p.Id == id);
         }
 
-        public Paciente agregar(Paciente paciente)
+        public Paciente Agregar(Paciente paciente)
         {
             _context.Pacientes.Add(paciente);
             _context.SaveChanges();

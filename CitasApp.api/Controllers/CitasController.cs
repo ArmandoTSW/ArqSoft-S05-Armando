@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CitasApp.Application.Services; // Asegúrate de que esté este using si marca error en los servicios
+using Microsoft.AspNetCore.Mvc;
+using CitasApp.Application.Services;
 
 namespace CitasApp.Api.Controllers
 {
+    /// <summary>Endpoints REST para consultar y confirmar citas médicas.</summary>
     [ApiController]
     [Route("api/[controller]")]
     public class CitasController : ControllerBase
@@ -30,13 +31,10 @@ namespace CitasApp.Api.Controllers
             return citas.Count == 0 ? NotFound() : Ok(citas);
         }
 
-        // =========================================================
-        // NUEVO ENDPOINT: POST /api/citas/confirmar/{citaId}
-        // =========================================================
+        /// <summary>Marca una cita como confirmada y dispara las notificaciones (email/SMS).</summary>
         [HttpPost("confirmar/{citaId}")]
         public IActionResult ConfirmarCita(int citaId)
         {
-            // Ejecuta la lógica del servicio que modifica el estado y dispara los Observers
             var resultado = _citaService.ConfirmarCita(citaId);
 
             if (!resultado)
@@ -44,7 +42,6 @@ namespace CitasApp.Api.Controllers
                 return NotFound(new { mensaje = $"No se encontró la cita con ID {citaId}" });
             }
 
-            // Retorna un estatus 200 de éxito al cliente de Swagger
             return Ok(new { mensaje = "Cita confirmada", id = citaId });
         }
     }

@@ -4,6 +4,7 @@ using CitasApp.Infrastructure.Security;
 
 namespace CitasApp.Application.Services
 {
+    /// <summary>Registro y login de médicos.</summary>
     public class AuthMedicoService
     {
         private readonly IMedicoRepository _medicoRepo;
@@ -15,6 +16,10 @@ namespace CitasApp.Application.Services
             _loginRepo = loginRepo;
         }
 
+        /// <summary>
+        /// Crea un médico nuevo junto con su credencial de acceso.
+        /// Lanza <see cref="InvalidOperationException"/> si el email ya está en uso.
+        /// </summary>
         public Medico Registrar(string nombre, string apellido, string especialidad, string numeroLicencia, string email, string password)
         {
             if (_loginRepo.ObtenerPorEmail(email) is not null)
@@ -38,6 +43,10 @@ namespace CitasApp.Application.Services
             return medico;
         }
 
+        /// <summary>
+        /// Verifica email/contraseña y devuelve el médico dueño de la cuenta.
+        /// Lanza <see cref="UnauthorizedAccessException"/> si las credenciales no son válidas.
+        /// </summary>
         public Medico Login(string email, string password)
         {
             var login = _loginRepo.ObtenerPorEmail(email)

@@ -7,6 +7,7 @@ using System.Security.Claims;
 
 namespace CitasApp.Web.Controllers
 {
+    /// <summary>Login, registro y logout para pacientes y médicos (autenticación por cookie).</summary>
     public class AccountController : Controller
     {
         private readonly AuthPacienteService _authPaciente;
@@ -98,10 +99,15 @@ namespace CitasApp.Web.Controllers
 
         // ---------- COMÚN ----------
 
+        /// <summary>
+        /// Crea la cookie de sesión con los datos básicos del usuario logueado
+        /// (email, id y rol) para que el resto de la app sepa quién es y qué puede ver.
+        /// </summary>
         private async Task IniciarSesion(string email, int id, string rol)
         {
             var claims = new List<Claim>
             {
+                new(ClaimTypes.Name, email),
                 new(ClaimTypes.Email, email),
                 new(ClaimTypes.NameIdentifier, id.ToString()),
                 new(ClaimTypes.Role, rol)

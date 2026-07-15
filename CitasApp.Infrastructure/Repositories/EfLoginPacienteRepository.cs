@@ -4,6 +4,7 @@ using CitasApp.Infrastructure.Data;
 
 namespace CitasApp.Infrastructure.Repositories
 {
+    /// <summary>Guarda y consulta credenciales de paciente usando Entity Framework / Postgres.</summary>
     public class EfLoginPacienteRepository : ILoginPacienteRepository
     {
         private readonly CitasAppDbContext _context;

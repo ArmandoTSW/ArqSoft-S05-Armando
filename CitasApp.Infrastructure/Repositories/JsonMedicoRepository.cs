@@ -4,6 +4,7 @@ using System.Text.Json;
 
 namespace CitasApp.Infrastructure.Repositories
 {
+    /// <summary>Guarda y consulta médicos en un archivo medicos.json (usado por CitasApp.api).</summary>
     public class JsonMedicoRepository : IMedicoRepository
     {
         private readonly string _path;
@@ -31,6 +32,6 @@ namespace CitasApp.Infrastructure.Repositories
             medicos.Add(medico);
             File.WriteAllText(_path, JsonSerializer.Serialize(medicos, _options));
             return medico;
-        }       
+        }
     }
 }

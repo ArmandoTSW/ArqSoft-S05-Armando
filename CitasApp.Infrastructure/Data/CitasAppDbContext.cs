@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CitasApp.Infrastructure.Data
 {
+    /// <summary>Acceso a la base de datos Postgres: pacientes, médicos, citas y sus logins.</summary>
     public class CitasAppDbContext : DbContext
     {
         public CitasAppDbContext(DbContextOptions<CitasAppDbContext> options) : base(options) { }

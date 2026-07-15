@@ -4,6 +4,7 @@ using System.Text.Json;
 
 namespace CitasApp.Infrastructure.Repositories
 {
+    /// <summary>Guarda y consulta pacientes en un archivo pacientes.json (usado por CitasApp.api).</summary>
     public class JsonPacienteRepository : IPacienteRepository
     {
         private readonly string _path;
@@ -24,7 +25,7 @@ namespace CitasApp.Infrastructure.Repositories
         public Paciente? ObtenerPorId(int id) =>
             ObtenerTodos().FirstOrDefault(p => p.Id == id);
 
-        public Paciente agregar(Paciente paciente)
+        public Paciente Agregar(Paciente paciente)
         {
             var pacientes = ObtenerTodos();
             paciente.Id = pacientes.Count == 0 ? 1 : pacientes.Max(p => p.Id) + 1;
@@ -32,7 +33,5 @@ namespace CitasApp.Infrastructure.Repositories
             File.WriteAllText(_path, JsonSerializer.Serialize(pacientes, _options));
             return paciente;
         }
-    } 
-
+    }
 }
-    

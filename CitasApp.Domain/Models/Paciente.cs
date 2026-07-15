@@ -1,5 +1,6 @@
 namespace CitasApp.Domain.Models
 {
+    /// <summary>Datos de un paciente registrado en el sistema.</summary>
     public class Paciente
     {
         public int Id { get; set; }

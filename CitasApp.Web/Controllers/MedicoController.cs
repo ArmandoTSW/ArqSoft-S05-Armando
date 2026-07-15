@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CitasApp.Web.Controllers
 {
+    /// <summary>Vista de administración de médicos. Solo médicos autenticados pueden entrar.</summary>
     [Authorize(Roles = "Medico")]
     public class MedicoController : Controller
     {
@@ -16,12 +17,14 @@ namespace CitasApp.Web.Controllers
             _logger = logger;
         }
 
+        /// <summary>Lista todos los médicos registrados.</summary>
         public IActionResult Index()
         {
             _logger.LogInformation("Listando todos los medicos");
             return View(_service.ObtenerTodosMedicos());
         }
 
+        /// <summary>Muestra el detalle de un médico, o 404 si no existe.</summary>
         public IActionResult Detalle(int id)
         {
             _logger.LogInformation("Buscando detalle del medico {MedicoId}", id);

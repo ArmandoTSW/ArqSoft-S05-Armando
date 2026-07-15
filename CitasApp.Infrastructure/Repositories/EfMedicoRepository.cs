@@ -4,6 +4,7 @@ using CitasApp.Infrastructure.Data;
 
 namespace CitasApp.Infrastructure.Repositories
 {
+    /// <summary>Guarda y consulta médicos usando Entity Framework / Postgres.</summary>
     public class EfMedicoRepository : IMedicoRepository
     {
         private readonly CitasAppDbContext _context;

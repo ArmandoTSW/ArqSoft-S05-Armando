@@ -1,8 +1,9 @@
-﻿using CitasApp.Application.Services;
+using CitasApp.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CitasApp.Api.Controllers
 {
+    /// <summary>Endpoints REST de solo lectura para consultar médicos.</summary>
     [ApiController]
     [Route("api/[controller]")]
     public class MedicosController : ControllerBase
@@ -23,6 +24,5 @@ namespace CitasApp.Api.Controllers
             var medico = _service.ObtenerMedicoPorId(id);
             return medico == null ? NotFound() : Ok(medico);
         }
-
     }
 }
