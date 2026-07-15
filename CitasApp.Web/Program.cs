@@ -22,24 +22,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
-// Infrastructure - Repositories (lo que ya tenías)
-builder.Services.AddScoped<IPacienteRepository>(sp =>
-{
-    var env = sp.GetRequiredService<IWebHostEnvironment>();
-    return new JsonPacienteRepository(Path.Combine(env.ContentRootPath, "data"));
-});
+// Infrastructure - Repositories (Entity Framework / Postgres)
+builder.Services.AddScoped<IPacienteRepository, EfPacienteRepository>();
 
-builder.Services.AddScoped<IMedicoRepository>(sp =>
-{
-    var env = sp.GetRequiredService<IWebHostEnvironment>();
-    return new JsonMedicoRepository(Path.Combine(env.ContentRootPath, "data"));
-});
+builder.Services.AddScoped<IMedicoRepository, EfMedicoRepository>();
 
-builder.Services.AddScoped<ICitaRepository>(sp =>
-{
-    var env = sp.GetRequiredService<IWebHostEnvironment>();
-    return new JsonCitaRepository(Path.Combine(env.ContentRootPath, "data"));
-});
+builder.Services.AddScoped<ICitaRepository, EfCitaRepository>();
 
 // --- NUEVO: repos de login (EF/Postgres) ---
 builder.Services.AddScoped<ILoginPacienteRepository, EfLoginPacienteRepository>();

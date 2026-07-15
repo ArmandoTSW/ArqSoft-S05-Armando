@@ -11,5 +11,6 @@ namespace CitasApp.Infrastructure.Data
         public DbSet<LoginMedico> LoginMedicos { get; set; }
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Medico> Medicos { get; set; }
+        public DbSet<Cita> Citas { get; set; }
     }
 }
