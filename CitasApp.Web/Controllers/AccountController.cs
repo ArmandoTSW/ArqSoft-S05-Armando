@@ -110,6 +110,9 @@ namespace CitasApp.Web.Controllers
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
         }
 
+        [HttpGet]
+        public IActionResult AccessDenied() => View();
+
         [Authorize]
         public async Task<IActionResult> Logout()
         {
