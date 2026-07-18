@@ -2,7 +2,7 @@
 
 Aplicación web para la gestión de citas médicas, desarrollada como proyecto académico para la materia de **Arquitectura de Software**.
 
-**Autor:** Armando Cen 
+**Autor:** Armando
 **Materia:** Arquitectura de Software  
 **Tecnología:** ASP.NET Core MVC — C#
 
