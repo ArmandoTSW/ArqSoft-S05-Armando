@@ -4,25 +4,28 @@
 ![Framework](https://img.shields.io/badge/.NET-Framework%204.7+-purple)
 ![License](https://img.shields.io/badge/license-Educational-green)
 
-**Alumno:** Enrique Zavala  
+**Alumno:** Armando Cen  
 **Materia:** Arquitectura de Software  
 **Escuela:** Tecnológico de Software  
 **Semana:** 6  
 
 ---
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 - [¿Qué es?](#qué-es)
 - [De MVC a Arquitectura Hexagonal](#de-mvc-a-arquitectura-hexagonal)
 - [Las 4 Capas Explicadas](#las-4-capas-explicadas)
 - [APIs REST Implementadas](#apis-rest-implementadas)
 - [Patrones de Diseño](#patrones-de-diseño)
-- [Beneficios](#beneficios-de-la-arquitectura-hexagonal)
-- [Flujo de Requests](#flujo-de-una-request-en-las-apis-rest)
-- [Cómo Ejecutar](#-cómo-ejecutar)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
-- [Licencia](#-licencia)
+- [Beneficios de la Arquitectura Hexagonal](#beneficios-de-la-arquitectura-hexagonal)
+- [Flujo de una Request en las APIs REST](#flujo-de-una-request-en-las-apis-rest)
+- [Cómo Ejecutar](#cómo-ejecutar)
+- [Pruebas con Swagger](#pruebas-con-swagger)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Configuración Importante](#configuración-importante)
+- [Solución de Problemas](#solución-de-problemas)
+- [Cláusula de Uso de IA](#cláusula-de-uso-de-ia)
 
 ---
 
@@ -39,9 +42,9 @@ Además, se implementaron **2 capas de API REST**:
 
 ## De MVC a Arquitectura Hexagonal
 
-### ❌ Antes (MVC — Un Solo Proyecto)
+### Antes (MVC — Un Solo Proyecto)
 
-```
+```text
 Citas_App/
 ├── Controllers/
 ├── Models/
@@ -53,12 +56,12 @@ Citas_App/
 
 **Problema:** Todo vivía en el mismo proyecto. Los modelos, la lógica de acceso a datos y la presentación estaban mezclados sin una separación clara de responsabilidades.
 
-### ✅ Después (Arquitectura Hexagonal — 4 Capas + 2 APIs REST)
+### Después (Arquitectura Hexagonal — 4 Capas + 2 APIs REST)
 
-```
+```text
 CitasApp.sln
 │
-├── CitasApp.Domain/                ← El núcleo del negocio
+├── CitasApp.Domain/                # El núcleo del negocio
 │   ├── Models/
 │   │   ├── Paciente.cs
 │   │   ├── Medico.cs
@@ -69,26 +72,26 @@ CitasApp.sln
 │       ├── IMedicoRepository.cs
 │       └── ICitaRepository.cs
 │
-├── CitasApp.Application/           ← Lógica de aplicación (Casos de uso)
+├── CitasApp.Application/           # Lógica de aplicación (Casos de uso)
 │   └── Services/
 │       ├── PacienteService.cs
 │       ├── MedicoService.cs
 │       ├── CitaService.cs
 │       └── CalculadoraService.cs
 │
-├── CitasApp.Infrastructure/        ← Adaptadores de salida
+├── CitasApp.Infrastructure/        # Adaptadores de salida
 │   └── Repositories/
 │       ├── JsonPacienteRepository.cs
 │       ├── JsonMedicoRepository.cs
 │       └── JsonCitaRepository.cs
 │
-├── CitasApp.Web/                   ← Adaptador de entrada (MVC)
+├── CitasApp.Web/                   # Adaptador de entrada (MVC)
 │   ├── Controllers/
 │   ├── Views/
 │   ├── data/
 │   └── Program.cs
 │
-├── CitasApp.api/                   ← API REST para Citas
+├── CitasApp.api/                   # API REST para Citas
 │   ├── Controllers/Api/
 │   │   ├── CitasController.cs
 │   │   ├── PacientesController.cs
@@ -96,73 +99,73 @@ CitasApp.sln
 │   ├── DTOs/
 │   └── Program.cs
 │
-└── CitasApp.Api-Calculadora/       ← API REST para Calculadora
+└── CitasApp.Api-Calculadora/       # API REST para Calculadora
     ├── Controllers/
     │   └── CalculadoraController.cs
     └── Program.cs
 ```
 
-### 🔗 Referencias Entre Proyectos
+### Referencias Entre Proyectos
 
-```
+```text
 CitasApp.Web
-├─→ CitasApp.Application    ← Los Services orquestan la lógica
-├─→ CitasApp.Domain         ← Modelos e interfaces
+├─→ CitasApp.Application    # Los Services orquestan la lógica
+├─→ CitasApp.Domain         # Modelos e interfaces
 └─→ CitasApp.Infrastructure (transitivamente via Application)
 
 CitasApp.api
-├─→ CitasApp.Application    ← Reutiliza los Services
-├─→ CitasApp.Domain         ← Modelos e interfaces
+├─→ CitasApp.Application    # Reutiliza los Services
+├─→ CitasApp.Domain         # Modelos e interfaces
 └─→ CitasApp.Infrastructure (transitivamente)
 
 CitasApp.Api-Calculadora
-└─→ CitasApp.Application    ← CalculadoraService
+└─→ CitasApp.Application    # CalculadoraService
 
 CitasApp.Application
-├─→ CitasApp.Domain         ← Usa los modelos
-└─→ CitasApp.Infrastructure ← Usa los Repositories
+├─→ CitasApp.Domain         # Usa los modelos
+└─→ CitasApp.Infrastructure # Usa los Repositories
 
 CitasApp.Infrastructure
-└─→ CitasApp.Domain         ← Implementa las interfaces
+└─→ CitasApp.Domain         # Implementa las interfaces
 
 CitasApp.Domain
-└─→ (no depende de nadie)   ← Completamente independiente ⭐
+└─→ (no depende de nadie)   # Completamente independiente
 ```
 
 ---
 
 ## Las 4 Capas Explicadas
 
-### 1. **Domain** (El Corazón del Negocio) 💛
+### 1. Domain (El Corazón del Negocio)
 
 **Responsabilidad:** Define las entidades y contratos del negocio.
 
-```
+```text
 CitasApp.Domain/
 ├── Models/
-│   ├── Paciente.cs         ← Paciente con ID, nombre, email
-│   ├── Medico.cs           ← Médico con especialidad
-│   ├── Cita.cs             ← Cita médica con fecha, hora
-│   └── ErrorViewModel.cs   ← Modelo de errores
+│   ├── Paciente.cs         # Paciente con ID, nombre, email
+│   ├── Medico.cs           # Médico con especialidad
+│   ├── Cita.cs             # Cita médica con fecha, hora
+│   └── ErrorViewModel.cs   # Modelo de errores
 └── Interfaces/
-    ├── IPacienteRepository ← Contrato para datos de pacientes
-    ├── IMedicoRepository   ← Contrato para datos de médicos
-    └── ICitaRepository     ← Contrato para datos de citas
+    ├── IPacienteRepository # Contrato para datos de pacientes
+    ├── IMedicoRepository   # Contrato para datos de médicos
+    └── ICitaRepository     # Contrato para datos de citas
 ```
 
 **Características:**
-- ✅ No conoce de bases de datos
-- ✅ No sabe de controllers ni HTTP
-- ✅ Completamente independiente
-- ✅ Solo define QUÉ es un Paciente, Médico, Cita
+- No conoce de bases de datos
+- No sabe de controllers ni HTTP
+- Completamente independiente
+- Solo define QUÉ es un Paciente, Médico, Cita
 
 ---
 
-### 2. **Application** (Orquestación de Lógica) 🎯
+### 2. Application (Orquestación de Lógica)
 
 **Responsabilidad:** Implementa los casos de uso y orquesta servicios.
 
-```
+```text
 CitasApp.Application/
 └── Services/
     ├── PacienteService
@@ -190,18 +193,18 @@ CitasApp.Application/
 ```
 
 **Características:**
-- ✅ Aquí va toda la lógica de aplicación
-- ✅ Los Services usan Repositories para obtener datos
-- ✅ Los Controllers usan Services para satisfacer requests
-- ✅ Intermediario entre presentación y datos
+- Aquí va toda la lógica de aplicación
+- Los Services usan Repositories para obtener datos
+- Los Controllers usan Services para satisfacer requests
+- Intermediario entre presentación y datos
 
 ---
 
-### 3. **Infrastructure** (Adaptadores de Salida) 🔌
+### 3. Infrastructure (Adaptadores de Salida)
 
 **Responsabilidad:** Implementa el acceso a datos.
 
-```
+```text
 CitasApp.Infrastructure/
 └── Repositories/
     ├── JsonPacienteRepository
@@ -215,17 +218,17 @@ CitasApp.Infrastructure/
 ```
 
 **Características:**
-- ✅ Implementa las interfaces del Domain
-- ✅ Define **CÓMO** se accede a los datos (JSON, SQL, API, etc.)
-- ✅ Fácil de cambiar: `JsonRepository` → `SqlServerRepository` sin afectar el resto
+- Implementa las interfaces del Domain
+- Define **CÓMO** se accede a los datos (JSON, SQL, API, etc.)
+- Fácil de cambiar: JsonRepository a SqlServerRepository sin afectar el resto
 
 ---
 
-### 4. **Web** (Adaptador de Entrada — MVC) 🌐
+### 4. Web (Adaptador de Entrada — MVC)
 
 **Responsabilidad:** Presenta la interfaz gráfica al usuario.
 
-```
+```text
 CitasApp.Web/
 ├── Controllers/
 │   ├── HomeController.cs
@@ -241,16 +244,16 @@ CitasApp.Web/
 ```
 
 **Características:**
-- ✅ Uno de los posibles clientes de la aplicación
-- ✅ Se pueden agregar múltiples adaptadores sin modificar el núcleo
-- ✅ Usa Services para obtener datos
-- ✅ Renderiza vistas HTML
+- Uno de los posibles clientes de la aplicación
+- Se pueden agregar múltiples adaptadores sin modificar el núcleo
+- Usa Services para obtener datos
+- Renderiza vistas HTML
 
 ---
 
-## 📡 APIs REST Implementadas
+## APIs REST Implementadas
 
-### API REST de Citas (`CitasApp.api`)
+### API REST de Citas (CitasApp.api)
 
 Expone endpoints para gestionar citas, pacientes y médicos:
 
@@ -279,7 +282,7 @@ Expone endpoints para gestionar citas, pacientes y médicos:
 
 ---
 
-### API REST de Calculadora (`CitasApp.Api-Calculadora`)
+### API REST de Calculadora (CitasApp.Api-Calculadora)
 
 Expone endpoints para operaciones matemáticas básicas:
 
@@ -302,9 +305,9 @@ Expone endpoints para operaciones matemáticas básicas:
 
 ---
 
-## 🎯 Patrones de Diseño
+## Patrones de Diseño
 
-### ✅ Repository Pattern
+### Repository Pattern
 Abstrae el acceso a datos mediante interfaces, permitiendo cambiar la implementación sin afectar servicios.
 
 ```csharp
@@ -318,12 +321,12 @@ public interface IPacienteRepository
 }
 ```
 
-**Ventaja:** Cambiar `JsonRepository` por `SqlRepository` es solo cambiar 1 línea en `Program.cs`.
+**Ventaja:** Cambiar JsonRepository por SqlRepository es solo cambiar 1 línea en Program.cs.
 
 ---
 
-### ✅ Dependency Injection
-En `Program.cs` se registran servicios y repositorios para inyección automática:
+### Dependency Injection
+En Program.cs se registran servicios y repositorios para inyección automática:
 
 ```csharp
 builder.Services.AddScoped<IPacienteRepository, JsonPacienteRepository>();
@@ -335,7 +338,7 @@ builder.Services.AddScoped<CalculadoraService>();
 
 ---
 
-### ✅ Service Layer
+### Service Layer
 Los Services orquestan la lógica y son reutilizados por múltiples clientes:
 
 ```csharp
@@ -361,7 +364,7 @@ public class CitaService
 
 ---
 
-### ✅ DTOs (Data Transfer Objects)
+### DTOs (Data Transfer Objects)
 Separa la estructura de las APIs del modelo interno:
 
 ```csharp
@@ -379,7 +382,7 @@ public class CitaDTO
 
 ---
 
-### ✅ CORS Habilitado
+### CORS Habilitado
 Permite que clientes desde cualquier origen accedan a las APIs:
 
 ```csharp
@@ -398,7 +401,7 @@ builder.Services.AddCors(options =>
 
 ---
 
-### ✅ Swagger Integrado
+### Swagger Integrado
 Las APIs generan documentación automática y permite testing en browser:
 
 ```csharp
@@ -416,7 +419,7 @@ app.UseSwaggerUI();
 | Beneficio | Descripción |
 |-----------|-------------|
 | **Separación de responsabilidades** | Cada capa tiene un trabajo claro. Domain no sabe de BD, Web no sabe de lógica |
-| **Intercambiabilidad de adaptadores** | Cambiar `JsonRepository` por `SqlRepository` es trivial |
+| **Intercambiabilidad de adaptadores** | Cambiar JsonRepository por SqlRepository es trivial |
 | **Testabilidad** | Services y Repositories basados en interfaces, fácil crear mocks |
 | **Mantenibilidad** | Un cambio en BD no afecta Controllers. Cambio en UI no afecta lógica |
 | **Escalabilidad** | Agregar nuevos adaptadores (APIs, gRPC, móvil) es independiente del núcleo |
@@ -427,7 +430,7 @@ app.UseSwaggerUI();
 
 ## Flujo de una Request en las APIs REST
 
-```
+```text
 ┌─────────────────────────────────────┐
 │ Cliente HTTP (Postman, React, etc.) │
 └──────────────┬──────────────────────┘
@@ -435,21 +438,21 @@ app.UseSwaggerUI();
                ▼
 ┌─────────────────────────────────────────────────┐
 │ CitasController / CalculadoraController         │
-│ ├─ Valida parámetros                           │
-│ └─ Recibe la petición                          │
+│ ├─ Valida parámetros                            │
+│ └─ Recibe la petición                           │
 └──────────────┬──────────────────────────────────┘
                │
                ▼
 ┌─────────────────────────────────────────────────┐
 │ CitaService / CalculadoraService                │
-│ ├─ Aplica reglas de negocio                    │
-│ └─ Orquesta la lógica                          │
+│ ├─ Aplica reglas de negocio                     │
+│ └─ Orquesta la lógica                           │
 └──────────────┬──────────────────────────────────┘
                │
                ▼
 ┌─────────────────────────────────────────────────┐
-│ CitaRepository                                   │
-│ └─ Accede a datos (solo para Citas)            │
+│ CitaRepository                                  │
+│ └─ Accede a datos (solo para Citas)             │
 └──────────────┬──────────────────────────────────┘
                │
                ▼
@@ -468,7 +471,7 @@ app.UseSwaggerUI();
 
 ---
 
-## 🚀 Cómo Ejecutar
+## Cómo Ejecutar
 
 ### Requisitos
 
@@ -478,44 +481,44 @@ app.UseSwaggerUI();
 
 ### Pasos
 
-#### 1️⃣ Clonar repositorio
+#### 1. Clonar repositorio
 
 ```bash
-git clone https://github.com/kiki-bot-sudo/ArqSoft-S05-Enrique.git
-cd ArqSoft-S05-Enrique
+git clone [https://github.com/ArmandoTSW/ArqSoft-S05-Armando.git](https://github.com/ArmandoTSW/ArqSoft-S05-Armando.git)
+cd ArqSoft-S05-Armando
 git checkout Api-Calculadora
 ```
 
-#### 2️⃣ Abrir solución en Visual Studio
+#### 2. Abrir solución en Visual Studio
 
 ```bash
 start CitasApp.sln
 ```
 
-O abre Visual Studio manualmente → File → Open Project/Solution → CitasApp.sln
+O abre Visual Studio manualmente -> File -> Open Project/Solution -> CitasApp.sln
 
-#### 3️⃣ Compilar solución
+#### 3. Compilar solución
 
-- Menú: **Compilar → Recompilar solución**
+- Menú: **Compilar -> Recompilar solución**
 - O presiona: `Ctrl + Shift + B`
 
-#### 4️⃣ Ejecutar aplicaciones
+#### 4. Ejecutar aplicaciones
 
 **Opción A: MVC Web**
-- Click en botón ▶ Run (ejecuta `CitasApp.Web` por defecto)
+- Click en botón Run (ejecuta `CitasApp.Web` por defecto)
 - Accede a: `http://localhost:44345`
 
 **Opción B: API REST Citas**
-- Click derecha en proyecto `CitasApp.api` → Set as Startup Project
-- Click en botón ▶ Run
+- Click derecha en proyecto `CitasApp.api` -> Set as Startup Project
+- Click en botón Run
 - Swagger: `http://localhost:7172/swagger`
 
 **Opción C: API Calculadora**
-- Click derecha en proyecto `CitasApp.Api-Calculadora` → Set as Startup Project
-- Click en botón ▶ Run
+- Click derecha en proyecto `CitasApp.Api-Calculadora` -> Set as Startup Project
+- Click en botón Run
 - Swagger: `http://localhost:5000/swagger`
 
-#### 5️⃣ Acceder a endpoints
+#### 5. Acceder a endpoints
 
 | Aplicación | URL |
 |-----------|-----|
@@ -525,7 +528,7 @@ O abre Visual Studio manualmente → File → Open Project/Solution → CitasApp
 
 ---
 
-## 🧪 Pruebas con Swagger
+## Pruebas con Swagger
 
 1. Abre el Swagger de cualquier API en tu navegador
 2. Expande un endpoint (click en la flecha)
@@ -535,7 +538,7 @@ O abre Visual Studio manualmente → File → Open Project/Solution → CitasApp
 6. Observa la respuesta (Status Code + Body)
 
 **Ejemplo:**
-```
+```text
 GET /api/Calculadora/sumar?a=10&b=5
 
 Respuesta:
@@ -549,9 +552,9 @@ Respuesta:
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estructura del Proyecto
 
-```
+```text
 CitasApp/
 │
 ├── CitasApp.Domain/
@@ -627,7 +630,7 @@ CitasApp/
 
 ---
 
-## 🔧 Configuración Importante
+## Configuración Importante
 
 ### `Program.cs` en Web y APIs
 
@@ -662,7 +665,7 @@ app.Run();
 
 ---
 
-## 🐛 Solución de Problemas
+## Solución de Problemas
 
 | Problema | Solución |
 |----------|----------|
@@ -675,52 +678,22 @@ app.Run();
 
 ---
 
-## 📝 Cláusula de Uso de IA
+## Cláusula de Uso de IA
 
-Durante el desarrollo de **CitasApp**, se utilizó **Claude (Anthropic)** como herramienta asistente para:
+Durante el desarrollo de **CitasApp**, se utilizó **Gemini de Google** como herramienta asistente para:
 
-- ✅ **Identificación de errores de compilación:** Diagnóstico de errores `CS0246`, `CS0006` y propuesta de soluciones
-- ✅ **Depuración de configuración:** Asistencia en problemas de namespaces, inyección de dependencias y referencias entre proyectos
-- ✅ **Generación de estructura:** Creación de la arquitectura base de 4 capas con patrones SOLID
-- ✅ **Implementación de APIs REST:** Código de Controllers y configuración de CORS/Swagger
-- ✅ **Refactorización de Services:** Agregación de nuevos servicios y actualización de configuración
-- ✅ **Creación de commits documentados:** Mensajes de git claros (feat, fix, docs)
+- **Identificación de errores de compilación:** Diagnóstico de errores `CS0246`, `CS0006` y propuesta de soluciones
+- **Depuración de configuración:** Asistencia en problemas de namespaces, inyección de dependencias y referencias entre proyectos
+- **Generación de estructura:** Creación de la arquitectura base de 4 capas con patrones SOLID
+- **Implementación de APIs REST:** Código de Controllers y configuración de CORS/Swagger
+- **Refactorización de Services:** Agregación de nuevos servicios y actualización de configuración
+- **Creación de commits documentados:** Mensajes de git claros (feat, fix, docs)
 
-**La responsabilidad del alumno:**
-- 🎓 Comprensión de conceptos de arquitectura hexagonal
-- 🎓 Decisiones arquitectónicas
-- 🎓 Pruebas finales y validación de funcionamiento
-- 🎓 Aprendizaje de patrones y mejores prácticas
+**La responsabilidad del autor:**
+- Comprensión de conceptos de arquitectura hexagonal
+- Decisiones arquitectónicas
+- Pruebas finales y validación de funcionamiento
+- Aprendizaje de patrones y mejores prácticas
 
-La IA actuó como **acelerador de desarrollo y debugger**, permitiendo enfoque en el aprendizaje.
-
----
-
-## 👨‍💻 Autor
-
-**Enrique Zavala**
-
-- 🎓 Alumno de Tecnológico de Software
-- 📚 Estudiante de Arquitectura de Software, Semana 6
-- 🔗 GitHub: [@kiki-bot-sudo](https://github.com/kiki-bot-sudo)
-- 📧 Email: enrique.zavala@tecdesoftware.edu.mx
-
----
-
-## 📄 Licencia
-
-Este proyecto es de **uso educativo**. Libre para modificar y distribuir con fines académicos.
-
----
-
-## 📞 Soporte
-
-Para preguntas o problemas:
-- Abre un issue en [GitHub](https://github.com/kiki-bot-sudo/ArqSoft-S05-Enrique/issues)
-- Contacta al autor por email
-
----
-
-**Última actualización:** Junio 2026  
-**Estado:** ✅ Completo y Funcional  
-**Versión:** 1.0.0
+La IA actuó como acelerador de desarrollo y debugger, permitiendo enfoque en el aprendizaje.
+```
