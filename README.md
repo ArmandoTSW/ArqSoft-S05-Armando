@@ -2,7 +2,7 @@
 
 Aplicación web para la gestión de citas médicas, desarrollada como proyecto académico para la materia de **Arquitectura de Software**.
 
-**Autor:** Armando
+**Autor:** Armando Cen  
 **Materia:** Arquitectura de Software  
 **Tecnología:** ASP.NET Core MVC — C#
 
@@ -17,6 +17,8 @@ Citas_App permite consultar y filtrar citas médicas, así como visualizar infor
 ## Arquitectura
 
 El proyecto aplica el patrón **Repository** con separación clara de capas:
+
+```text
 Citas_App/
 ├── Controllers/      # Controladores MVC (Cita, Médico, Paciente, Home)
 ├── Interfaces/       # Contratos de los repositorios
