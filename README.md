@@ -1,6 +1,6 @@
 # CitasApp — Arquitectura Hexagonal
 
-**Alumno:** Enrique Zavala  
+**Alumno:** Armando Cen
 **Materia:** Arquitectura de Software  
 **Escuela:** Tecnológico de Software  
 **Semana:** 6  
