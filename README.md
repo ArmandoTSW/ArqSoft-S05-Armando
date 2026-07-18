@@ -1,8 +1,7 @@
 # CitasApp — Arquitectura Hexagonal
 
-**Alumno:** Enrique Zavala  
+**Alumno:** Armando Cen  
 **Materia:** Arquitectura de Software  
-**Escuela:** Tecnológico de Software  
 **Semana:** 6  
 
 ---
@@ -16,7 +15,7 @@ Se migró la aplicación **CitasApp** de una arquitectura MVC tradicional (un so
 ## De MVC a Arquitectura Hexagonal
 
 ### Antes (MVC — un solo proyecto)
-```
+```text
 Citas_App/
 ├── Controllers/
 ├── Models/
@@ -25,19 +24,20 @@ Citas_App/
 ├── Views/
 └── Program.cs
 ```
+
 Todo vivía en el mismo proyecto. Los modelos, la lógica de acceso a datos y la presentación estaban mezclados sin una separación clara de responsabilidades.
 
 ### Después (Arquitectura Hexagonal — 4 capas)
-```
+```text
 CitasApp.sln
-├── CitasApp.Domain/          ← El núcleo del negocio
+├── CitasApp.Domain/          # El núcleo del negocio
 │   ├── Models/               (Paciente, Medico, Cita, ErrorViewModel)
 │   └── Interfaces/           (IPacienteRepository, IMedicoRepository, ICitaRepository)
-├── CitasApp.Application/     ← Lógica de aplicación (Casos de uso)
+├── CitasApp.Application/     # Lógica de aplicación (Casos de uso)
 │   └── Services/             (PacienteService, MedicoService, CitaService)
-├── CitasApp.Infrastructure/  ← Adaptadores de salida
+├── CitasApp.Infrastructure/  # Adaptadores de salida
 │   └── Repositories/         (JsonPacienteRepository, JsonMedicoRepository, JsonCitaRepository)
-└── CitasApp.Web/             ← Adaptador de entrada (MVC)
+└── CitasApp.Web/             # Adaptador de entrada (MVC)
     ├── Controllers/
     ├── Views/
     ├── data/
@@ -45,21 +45,21 @@ CitasApp.sln
 ```
 
 ### Referencias entre proyectos
-```
+```text
 CitasApp.Web
-    ├→ CitasApp.Application  ← Los Services orquestan la lógica
-    ├→ CitasApp.Domain       ← Modelos e interfaces
-    └→ CitasApp.Infrastructure (transitivamente via Application)
+    ├── CitasApp.Application   ← Los Services orquestan la lógica
+    ├── CitasApp.Domain        ← Modelos e interfaces
+    └── CitasApp.Infrastructure (transitivamente via Application)
 
 CitasApp.Application
-    ├→ CitasApp.Domain       ← Usa los modelos
-    └→ CitasApp.Infrastructure ← Usa los Repositories
+    ├── CitasApp.Domain        ← Usa los modelos
+    └── CitasApp.Infrastructure ← Usa los Repositories
 
 CitasApp.Infrastructure
-    └→ CitasApp.Domain       ← Implementa las interfaces
+    └── CitasApp.Domain        ← Implementa las interfaces
 
 CitasApp.Domain
-    └→ (no depende de nadie)  ← Completamente independiente
+    └── (no depende de nadie)  ← Completamente independiente
 ```
 
 ---
@@ -98,22 +98,17 @@ Es solo uno de los posibles clientes. En el futuro podrías agregar una API REST
 ## Beneficios de la Arquitectura Hexagonal
 
 1. **Separación de responsabilidades:** Cada capa tiene un trabajo claro. Domain no sabe de bases de datos, Web no sabe de lógica de negocio.
-
 2. **Intercambiabilidad de adaptadores:** Cambiar `JsonPacienteRepository` por `SqlServerPacienteRepository` es trivial — solo cambias la implementación, las interfaces y la lógica siguen igual.
-
 3. **Testabilidad:** Con los Services y Repositories basados en interfaces, es fácil crear mocks para pruebas unitarias.
-
 4. **Mantenibilidad:** Un cambio en la base de datos no afecta los Controllers. Un cambio en la presentación no afecta la lógica de negocio.
-
 5. **Escalabilidad:** Agregar nuevos adaptadores (API REST, gRPC, aplicación móvil) es independiente del núcleo de negocio.
-
 6. **Reutilización:** Los Services pueden ser usados por múltiples clientes (Web, API, CLI) sin duplicar lógica.
 
 ---
 
 ## Flujo de una Request
 
-```
+```text
 1. Usuario hace clic en "Ver Pacientes"
    ↓
 2. PacienteController.Index() recibe la request
@@ -143,11 +138,12 @@ Es solo uno de los posibles clientes. En el futuro podrías agregar una API REST
 
 ## Cláusula de uso de IA
 
-Durante el desarrollo de esta práctica se utilizó **Claude (Anthropic)** como herramienta de apoyo en el proceso de refactorización. El uso de la IA se limitó a:
+Durante el desarrollo de esta práctica se utilizó **Gemini de Google** como herramienta de apoyo en el proceso de refactorización. El uso de la IA se limitó a:
 
 - Identificación de errores de compilación (`CS0246`, `CS0006`) y propuesta de soluciones.
 - Depuración conjunta de problemas de configuración entre proyectos (referencias, namespaces, `IWebHostEnvironment`).
 - Generación de la estructura inicial de archivos `.csproj`, `.sln` y Services.
 - Creación de los archivos de la capa Application (Services) y actualización de Controllers.
 
-La comprensión de los conceptos de arquitectura hexagonal, la toma de decisiones sobre la estructura del proyecto, la verificación del funcionamiento final y la integración de las 4 capas fueron responsabilidad del alumno.
+La comprensión de los conceptos de arquitectura hexagonal, la toma de decisiones sobre la estructura del proyecto, la verificación del funcionamiento final y la integración de las 4 capas fueron responsabilidad del autor.
+```
