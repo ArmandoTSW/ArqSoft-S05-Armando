@@ -2,7 +2,7 @@
 
 Aplicación web para la gestión de citas médicas, desarrollada como proyecto académico para la materia de **Arquitectura de Software**.
 
-**Autor:** Enrique Zavala  
+**Autor:** Armando Cen 
 **Materia:** Arquitectura de Software  
 **Tecnología:** ASP.NET Core MVC — C#
 
@@ -17,8 +17,6 @@ Citas_App permite consultar y filtrar citas médicas, así como visualizar infor
 ## Arquitectura
 
 El proyecto aplica el patrón **Repository** con separación clara de capas:
-
-```
 Citas_App/
 ├── Controllers/      # Controladores MVC (Cita, Médico, Paciente, Home)
 ├── Interfaces/       # Contratos de los repositorios
@@ -26,7 +24,6 @@ Citas_App/
 ├── Models/           # Modelos de dominio (Cita, Médico, Paciente)
 ├── Views/            # Vistas Razor por entidad
 └── Data/             # Archivos JSON de persistencia
-```
 
 - **Inyección de dependencias** registrada en `Program.cs` con `AddScoped<IInterface, Implementacion>()`.
 - Las interfaces desacoplan la lógica de negocio del mecanismo de persistencia, facilitando en un futuro cambiar a una base de datos sin modificar los controladores.
@@ -63,6 +60,4 @@ No se requiere configuración adicional de base de datos.
 
 ## Cláusula de uso de IA
 
-Durante el desarrollo de este proyecto se utilizó inteligencia artificial (Claude de Anthropic) como herramienta de apoyo para la **identificación y visualización de errores** en el código, tales como namespaces inconsistentes, código muerto y rutas de archivos con sensibilidad a mayúsculas.
-
-Todas las correcciones fueron realizadas manualmente por el autor. La IA no generó código funcional para este proyecto; su rol fue exclusivamente el de revisión y diagnóstico.
+Durante el desarrollo de este proyecto se utilizó inteligencia artificial (Gemini de Google) como herramienta de apoyo para la **identificación y visualización de errores** en el código, tales como namespaces inconsistentes, código muerto y rutas de archivos con sensibilidad a mayúsculas.
